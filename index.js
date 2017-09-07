@@ -50,6 +50,27 @@ app.get('/position', (req, res) => {
     }
 });
 
+app.get('/POIByRect', (req, res) => {
+    const params = req.query;
+
+    const latTop = params["latTop"];
+    const lngTop = params["lngTop"];
+    const latBottom = params["latBottom"];
+    const lngBottom = params["lngBottom"];
+    console.log(latTop);
+    console.log(lngTop);
+    console.log(latBottom);
+    console.log(lngBottom);
+    if (latTop != undefined && lngTop != undefined && latBottom != undefined && lngBottom != undefined) {
+        connection.query("SELECT * FROM transportations WHERE x<=" + lngTop + " AND y<=" + latTop + " AND x>=" + lngBottom + " AND y>=" + latBottom, (err, rows) => {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(rows));
+        });
+    } else {
+        res.send('No data!');
+    }
+});
+
 app.get('/POI', (req, res) => {
     const params = req.query;
 
